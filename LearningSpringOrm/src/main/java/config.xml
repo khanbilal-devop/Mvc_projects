@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd">
+		
+	<tx:annotation-driven/>
+
+<!-- <context:annotation-config></context:annotation-config> -->
+<context:component-scan base-package="com"></context:component-scan>
+<bean
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		id="dataSource" p:driverClassName="com.mysql.jdbc.Driver"
+		p:url="jdbc:mysql://localhost:3306/learningorm" p:username="root"
+		p:password="root"></bean>
+
+	<bean
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
+		id="session" p:dataSource-ref="dataSource">
+
+		<property name="annotatedClasses">
+			<list>
+				
+				<value>com.spring.Teacher</value>
+			</list>
+		</property>
+
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL57Dialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">create</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.orm.hibernate5.HibernateTemplate"
+		id="hibernateTempelate" p:sessionFactory-ref="session"><property name="checkWriteOperations" value="false"></property></bean>
+	<bean class="org.springframework.orm.hibernate5.HibernateTransactionManager" id="transactionManager" p:sessionFactory-ref="session"></bean>
+</beans>

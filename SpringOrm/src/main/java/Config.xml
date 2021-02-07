@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd">
+		
+	<tx:annotation-driven/>
+	<context:annotation-config></context:annotation-config>
+<!--   <context:component-scan base-package="com"></context:component-scan> -->
+	
+	<bean
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		id="dataSource" p:driverClassName="com.mysql.jdbc.Driver"
+		p:url="jdbc:mysql://localhost:3306/spring_hibernate" p:username="root"
+		p:password="root"></bean>
+
+	<bean
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
+		id="session" p:dataSource-ref="dataSource">
+
+		<property name="annotatedClasses">
+			<list>
+				<value>com.springOrm.entities.Student</value>
+				<value>com.springOrm.entities.Teacher</value>
+			</list>
+		</property>
+
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL57Dialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.orm.hibernate5.HibernateTemplate"
+		id="hibernateTempelate" p:SessionFactory-ref="session"></bean>
+	<bean class="org.springframework.orm.hibernate5.HibernateTransactionManager" id="transactionManager" p:sessionFactory-ref="session"></bean>
+
+<!--            The first ten objects -->
+		<bean class="com.springOrm.entities.Student" id="student1"
+			c:name="Shankar" c:age="20" c:profession="Architect" c:gender="Male"
+			c:id="101"></bean>
+			
+			<bean class="com.springOrm.entities.Student" id="student2"
+			c:name="Bilal" c:age="23" c:profession="Engineer" c:gender="Male"
+			c:id="102"></bean>
+		
+			<bean class="com.springOrm.entities.Student" id="student3"
+		c:name="Asad" c:age="30" c:profession="Accountant" c:gender="Male"
+		c:id="103"></bean>
+		
+			<bean class="com.springOrm.entities.Student" id="student4"
+		c:name="Ravi" c:age="35" c:profession="FreeLancer" c:gender="Male"
+		c:id="104"></bean>
+		
+				<bean class="com.springOrm.entities.Student" id="student5"
+		c:name="John" c:age="15" c:profession="BusinessMan" c:gender="Male"
+		c:id="105"></bean>
+
+	<bean class="com.springOrm.entities.Teacher" id="teacher1"
+		c:name="Shankar" c:age="20" c:profession="Architect" c:gender="Male"
+		c:id="101"></bean>
+		
+		<bean class="com.springOrm.entities.Teacher" id="teacher2"
+		c:name="Bilal" c:age="23" c:profession="Engineer" c:gender="Male"
+		c:id="102"></bean>
+		
+			<bean class="com.springOrm.entities.Teacher" id="teacher3"
+		c:name="Asad" c:age="30" c:profession="Accountant" c:gender="Male"
+		c:id="103"></bean>
+		
+			<bean class="com.springOrm.entities.Teacher" id="teacher4"
+		c:name="Ravi" c:age="35" c:profession="FreeLancer" c:gender="Male"
+		c:id="104"></bean>
+		
+				<bean class="com.springOrm.entities.Teacher" id="teacher5"
+		c:name="John" c:age="15" c:profession="BusinessMan" c:gender="Male"
+		c:id="105"></bean>
+
+<!--    updated objects -->
+         
+         <bean class="com.springOrm.entities.Student" id="updatedstudent5"
+		c:name="KhanSahab" c:age="34" c:profession="Interior" c:gender="Male"
+		c:id="105"></bean>
+
+	<bean class="com.springOrm.entities.Teacher" id="updatedteacher1"
+		c:name="Rahul" c:age="24" c:profession="Doctor" c:gender="Male"
+		c:id="101"></bean>
+         
+
+	<bean class="com.springOrm.dao.DaoImpl" id="dao"></bean>
+	<bean class="com.spring.App" id="app" p:dao-ref="dao"></bean>
+</beans>
